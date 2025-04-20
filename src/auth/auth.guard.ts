@@ -17,6 +17,8 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
+    // Log Authorization header untuk debug
+    console.log('Authorization header:', request.headers.authorization);
 
     // Skip public api
     if (['/api/auth/login', '/api/auth/register'].includes(request.url)) {

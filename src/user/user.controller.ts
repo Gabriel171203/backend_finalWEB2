@@ -8,7 +8,7 @@ import {
 import { UserService } from './user.service';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { User } from './user.entity';
-import { ProfileDTO } from './profile.dto';
+import { ProfileDTO } from './dto/profile.dto';
 
 @Controller('user')
 export class UserController {

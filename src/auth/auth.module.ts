@@ -6,10 +6,12 @@ import { AuthController } from './auth.controller';
 import { User } from '../user/user.entity';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    ConfigModule, // <-- Tambahkan ini
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -23,6 +25,7 @@ import { UserService } from '../user/user.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [UserService, AuthService],
+  providers: [UserService, AuthService, JwtStrategy],
+  exports: [JwtModule, ConfigModule],
 })
 export class AuthModule {}

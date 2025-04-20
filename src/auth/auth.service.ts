@@ -19,7 +19,9 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, password: string) {
+    console.log('Login attempt email:', email);
     const user: User | null = await this.userService.findByEmail(email);
+    console.log('User found:', user);
     if (
       user == null ||
       email != user.email ||
@@ -27,7 +29,7 @@ export class AuthService {
     ) {
       throw new UnauthorizedException();
     }
-    const payload: JwtPayloadDto = { sub: user.id, email: user.email };
+    const payload: JwtPayloadDto = { sub: user.id, email: user.email, username: user.username };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

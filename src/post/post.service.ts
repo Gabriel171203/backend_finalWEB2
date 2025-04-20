@@ -20,6 +20,7 @@ export class PostService {
   ): Promise<Posts[]> {
     return await this.postRepository.find({
       where: { user_id: userId },
+      relations: ['tags'],
       skip: (page - 1) * limit,
       take: limit,
       order: {
@@ -34,6 +35,7 @@ export class PostService {
         user_id: userId,
         id: postId,
       },
+      relations: ['tags'],
     });
     if (!post) {
       return new Posts();
@@ -43,5 +45,17 @@ export class PostService {
 
   async deleteById(postId: number) {
     await this.postRepository.delete({ id: postId });
+  }
+
+  async findByUserIdAndTagId(userId: number, tagId: number, page: number, limit: number): Promise<Posts[]> {
+    return await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.tags', 'tag')
+      .where('post.user_id = :userId', { userId })
+      .andWhere('tag.id = :tagId', { tagId })
+      .orderBy('post.created_at', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getMany();
   }
 }
