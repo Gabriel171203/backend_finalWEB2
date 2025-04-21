@@ -20,7 +20,7 @@ export class PostService {
   ): Promise<Posts[]> {
     return await this.postRepository.find({
       where: { user_id: userId },
-      relations: ['tags'],
+      relations: ['tags', 'user'],
       skip: (page - 1) * limit,
       take: limit,
       order: {
@@ -35,7 +35,7 @@ export class PostService {
         user_id: userId,
         id: postId,
       },
-      relations: ['tags'],
+      relations: ['tags', 'user'],
     });
     if (!post) {
       return new Posts();
