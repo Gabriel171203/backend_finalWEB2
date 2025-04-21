@@ -93,6 +93,11 @@ export class PostController {
     post.content = createPostDTO.content;
     post.image_url = createPostDTO.imageUrl;
     post.title = createPostDTO.title;
+    if (createPostDTO.tags && createPostDTO.tags.length > 0) {
+      post.tags = await this.tagRepository.findByIds(createPostDTO.tags);
+    } else {
+      post.tags = [];
+    }
     await this.postService.save(post);
   }
 
